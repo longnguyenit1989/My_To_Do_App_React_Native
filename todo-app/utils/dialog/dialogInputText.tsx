@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Modal,
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 type DialogInputTextProps = {
   visible: boolean;
@@ -16,23 +24,28 @@ const DialogInputText: React.FC<DialogInputTextProps> = props => {
     setInputText('');
   };
 
+  useEffect(() => {
+    setInputText('');
+  }, [props.visible]);
+
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={props.visible}
-      onRequestClose={() => { }}>
-      <TouchableOpacity style={styles.modalContainer} onPress={props.onPressCancel}>
+    <Modal animationType="fade" transparent={true} visible={props.visible}>
+      <TouchableOpacity
+        style={styles.touchableOpacity}
+        onPress={props.onPressCancel}>
         <View style={styles.dialogContainer}>
           <Text style={styles.titleDialog}>{props.tittle}</Text>
 
           <TextInput
             style={styles.inputText}
             value={inputText}
-            onChangeText={value => setInputText(value)}></TextInput>
+            onChangeText={value => setInputText(value)}
+            placeholder={'your todo name...'}
+            autoFocus = {true}
+          />
 
           <View style={styles.buttonContainer}>
-            <Button title="OK" onPress={clickOkButtonDialog}></Button>
+            <Button title="Ok" onPress={clickOkButtonDialog}></Button>
           </View>
         </View>
       </TouchableOpacity>
@@ -41,7 +54,7 @@ const DialogInputText: React.FC<DialogInputTextProps> = props => {
 };
 
 const styles = StyleSheet.create({
-  modalContainer: {
+  touchableOpacity: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -69,7 +82,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   buttonContainer: {
-    width: '50%',
+    width: '35%',
   },
 });
 
