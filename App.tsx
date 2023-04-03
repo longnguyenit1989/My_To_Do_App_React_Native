@@ -1,117 +1,88 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {FC, useState} from 'react';
+import {colors} from './todo-app/utils/color/colors';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  TouchableOpacity,
   View,
 } from 'react-native';
+import DialogInputText from './todo-app/utils/dialog/dialogInputText';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App: FC = () => {
+  const [isDialogVisible, setDialogVisible] = useState(false);
+  const [inputText, setInputText] = useState('');
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const showDialogInputText = () => {
+    setDialogVisible(true);
+  };
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  const hideDialogInputText = () => {
+    setDialogVisible(false);
+  };
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const handleClickOk = (text: string) => {
+    hideDialogInputText();
+    setInputText('');
+  };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handleClickCancel = () => {
+    hideDialogInputText();
+    setInputText('');
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={{flex: 1}}>
+      <View style={styles.toolbarView}>
+        <Text style={styles.toolbarText}>My todo list</Text>
+      </View>
+
+      <SafeAreaView style={styles.containerView}>
+        <DialogInputText
+          visible={isDialogVisible}
+          tittle="Input your todo"
+          onPressOk={handleClickOk}
+          onPressCancel={handleClickCancel}></DialogInputText>
+
+        <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={showDialogInputText}>
+          <Text style={styles.floatingButtonText}>+</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  containerView: {
+    flex: 1,
+    backgroundColor: colors.white,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  toolbarView: {
+    height: 50,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
+  toolbarText: {
+    color: colors.white,
     fontSize: 18,
-    fontWeight: '400',
   },
-  highlight: {
-    fontWeight: '700',
+  floatingButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  floatingButtonText: {
+    fontSize: 30,
+    color: colors.white,
   },
 });
 
