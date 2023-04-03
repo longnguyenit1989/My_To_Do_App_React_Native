@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-type DialogInputTextProps = {
+interface DialogInputTextProps {
   visible: boolean;
   tittle: string;
   onPressOk: (text: string) => void;
   onPressCancel: () => void;
 };
 
-const DialogInputText: React.FC<DialogInputTextProps> = props => {
+const DialogInputText: React.FC<DialogInputTextProps> = (props: DialogInputTextProps) => {
   const [inputText, setInputText] = useState('');
 
   const clickOkButtonDialog = () => {

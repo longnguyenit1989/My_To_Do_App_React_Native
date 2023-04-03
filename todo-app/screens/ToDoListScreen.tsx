@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 
-import { MyToDo } from '../Entity/MyToDo';
+import { MyToDo } from '../entity/MyToDo';
 
 import { Colors } from '../utils/color/Colors';
 import DialogInputText from '../utils/dialog/DialogInputText';
