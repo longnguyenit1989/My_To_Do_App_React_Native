@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     color: Colors.white
   },
   containerItemToDo: {
-    marginHorizontal: 10,
-    marginVertical: 5,
+    marginHorizontal: 12,
+    marginVertical: 8,
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 12
   },
   firstCharacterItemToDo: {
     fontSize: 16,
