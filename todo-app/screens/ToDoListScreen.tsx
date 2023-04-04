@@ -1,4 +1,5 @@
 import React, {FC, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   FlatList,
@@ -13,8 +14,11 @@ import {MyToDo} from '../entity/MyToDo';
 
 import {Colors} from '../utils/color/Colors';
 import DialogInputText from '../utils/dialog/DialogInputText';
+import { NameScreen } from '../utils/Constans';
 
 const ToDoListScreen: FC = () => {
+  const navigation = useNavigation();
+
   const [isDialogVisible, setDialogVisible] = useState(false);
   const [myToDoArray, setMyToDoArray] = useState<MyToDo[]>([]);
 
@@ -37,26 +41,29 @@ const ToDoListScreen: FC = () => {
     hideDialogInputText();
   };
 
+  const handleClickItemToDo = (item: MyToDo) => {
+    navigation.navigate(NameScreen.nameToDoDetailScreen, { myToDo: item });
+  };
+
   const handleClickCancel = () => {
     hideDialogInputText();
   };
 
   const ListItem: React.FC<{item: MyToDo}> = ({item}) => {
     return (
-      <View style={styles.containerItemToDo}>
+      <TouchableOpacity
+        onPress={() => handleClickItemToDo(item)}
+        style={styles.containerItemToDo}>
         <View style={styles.circleItemToDo}>
           <Text style={styles.firstCharacterItemToDo}>{item.name[0]}</Text>
         </View>
         <Text style={styles.nameItemToDo}>{item.name}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   return (
     <View style={{flex: 1}}>
-      <View style={styles.toolbarView}>
-        <Text style={styles.toolbarText}>My todo list</Text>
-      </View>
 
       <FlatList
         data={myToDoArray}
@@ -136,3 +143,4 @@ const styles = StyleSheet.create({
 });
 
 export default ToDoListScreen;
+
