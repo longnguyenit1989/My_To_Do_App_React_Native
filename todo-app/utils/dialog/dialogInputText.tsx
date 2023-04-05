@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: Colors.blue,
   },
   inputTextToDo: {
     borderWidth: 1,
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
+    fontSize: Dimens.sizeTextButton,
   },
   textButton: {
     color: Colors.white,

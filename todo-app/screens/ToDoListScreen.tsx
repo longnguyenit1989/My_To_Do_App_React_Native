@@ -37,7 +37,6 @@ const ToDoListScreen: FC = () => {
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const myToDo = new MyToDo(text, timestampInSeconds);
     setMyToDoArray([...myToDoArray, myToDo]);
-    // myToDoArray.map((item) => console.log(item))
     hideDialogInputText();
   };
 
