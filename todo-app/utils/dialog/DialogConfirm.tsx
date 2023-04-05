@@ -28,13 +28,13 @@ const DialogConfirm: React.FC<DialogConfirmProps> = (
           <Text style={styles.messageDialog}>{props.message}</Text>
 
           <View style={styles.viewHorizontalButton}>
-            <TouchableOpacity style={styles.touchableOpacityButtonOk}>
+            <TouchableOpacity style={styles.touchableOpacityButtonOk} onPress = {props.onPressOk}>
               <Text style={styles.textButton}>{Strings.ok}</Text>
             </TouchableOpacity>
 
             <View style={styles.blankView} />
 
-            <TouchableOpacity style={styles.touchableOpacityButtonCancel}>
+            <TouchableOpacity style={styles.touchableOpacityButtonCancel} onPress = {props.onPressCancel}>
               <Text style={styles.textButton}>{Strings.cancel}</Text>
             </TouchableOpacity>
           </View>

@@ -16,12 +16,12 @@ import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 
 const ToDoDetailScreen: React.FC = () => {
-  const [inputText, setInputText] = useState('');
-  const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
-  const [isDialogDeleteVisible, setDialogDeleteVisible] = useState(false);
-
   const route = useRoute();
   const myToDo = (route?.params?.myToDo as MyToDo) || null;
+
+  const [inputText, setInputText] = useState(myToDo?.name ?? '');
+  const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
+  const [isDialogDeleteVisible, setDialogDeleteVisible] = useState(false);
 
   const showDialogUpdateInputText = () => {
     setDialogUpdateVisible(true);
@@ -57,7 +57,7 @@ const ToDoDetailScreen: React.FC = () => {
 
       <TextInput
         style={styles.inputTextToDo}
-        value={myToDo?.name ?? ''}
+        value={inputText}
         onChangeText={value => setInputText(value)}
         placeholder={'your todo name...'}
         autoFocus={true}
