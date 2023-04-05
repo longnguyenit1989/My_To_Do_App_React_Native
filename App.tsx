@@ -5,8 +5,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import ToDoListScreen from './todo-app/screens/ToDoListScreen';
 import ToDoDetailScreen from './todo-app/screens/ToDoDetailScreen';
-import { NameScreen } from './todo-app/utils/Constans';
-import { Colors } from './todo-app/utils/color/Colors';
+import {NameScreen, TittleToolBarScreen} from './todo-app/utils/Constans';
+import {Colors} from './todo-app/utils/color/Colors';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +19,7 @@ const App: React.FunctionComponent = () => {
           name={NameScreen.nameToDoListScreen}
           component={ToDoListScreen}
           options={{
-            title: 'My todo list',
+            title: TittleToolBarScreen.tittleToDoListScreen,
             headerStyle: {
               backgroundColor: Colors.primary,
             },
@@ -30,7 +30,7 @@ const App: React.FunctionComponent = () => {
           name={NameScreen.nameToDoDetailScreen}
           component={ToDoDetailScreen}
           options={{
-            title: 'Todo Detail',
+            title: TittleToolBarScreen.tittleToDoDetailScreen,
             headerStyle: {
               backgroundColor: Colors.primary,
             },

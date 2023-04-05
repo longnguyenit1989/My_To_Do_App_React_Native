@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 import {
   FlatList,
@@ -14,7 +14,7 @@ import {MyToDo} from '../entity/MyToDo';
 
 import {Colors} from '../utils/color/Colors';
 import DialogInputText from '../utils/dialog/DialogInputText';
-import { NameScreen } from '../utils/Constans';
+import {Dimens, NameScreen} from '../utils/Constans';
 
 const ToDoListScreen: FC = () => {
   const navigation = useNavigation();
@@ -42,7 +42,7 @@ const ToDoListScreen: FC = () => {
   };
 
   const handleClickItemToDo = (item: MyToDo) => {
-    navigation.navigate(NameScreen.nameToDoDetailScreen, { myToDo: item });
+    navigation.navigate(NameScreen.nameToDoDetailScreen, {myToDo: item});
   };
 
   const handleClickCancel = () => {
@@ -64,8 +64,8 @@ const ToDoListScreen: FC = () => {
 
   return (
     <View style={{flex: 1}}>
-
       <FlatList
+        style={styles.containerFlastList}
         data={myToDoArray}
         renderItem={({item}) => <ListItem item={item} />}
         keyExtractor={myToDo => myToDo.id.toString()}
@@ -92,15 +92,18 @@ const styles = StyleSheet.create({
   containerView: {
     flex: 1,
   },
+  containerFlastList: {
+    paddingHorizontal: Dimens.paddingHorizontalContainer,
+  },
   toolbarView: {
     height: 50,
     backgroundColor: Colors.primary,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   toolbarText: {
     color: Colors.white,
-    fontSize: 18
+    fontSize: 18,
   },
   floatingButton: {
     position: 'absolute',
@@ -111,17 +114,16 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: Colors.primary,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   floatingButtonText: {
     fontSize: 30,
-    color: Colors.white
+    color: Colors.white,
   },
   containerItemToDo: {
-    marginHorizontal: 12,
-    marginVertical: 8,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 15,
   },
   circleItemToDo: {
     width: 40,
@@ -130,17 +132,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.blue,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12
+    marginRight: 12,
   },
   firstCharacterItemToDo: {
     fontSize: 16,
-    color: Colors.white
+    color: Colors.white,
   },
   nameItemToDo: {
     fontSize: 16,
-    color: Colors.black
+    color: Colors.black,
   },
 });
 
 export default ToDoListScreen;
-
