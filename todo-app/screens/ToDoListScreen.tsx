@@ -41,8 +41,30 @@ const ToDoListScreen: FC = () => {
   };
 
   const handleClickItemToDo = (item: MyToDo) => {
-    navigation.navigate(NameScreen.nameToDoDetailScreen, {myToDo: item});
+    navigation.navigate(NameScreen.nameToDoDetailScreen, {
+      myToDo: item,
+      onUpdate: (updatedToDo: MyToDo) => {
+        updateMyTodo(updatedToDo)
+      },
+      onDelete: () => {
+        
+      }
+    });
   };
+
+  const updateMyTodo = (updatedToDo: MyToDo) => {
+    // update myToDo at myToDoArray
+    setMyToDoArray(prevArray => {
+      const updatedArray = prevArray.map(existingToDo => {
+        if (existingToDo.id === updatedToDo.id) {
+          return updatedToDo;
+        } else {
+          return existingToDo;
+        }
+      });
+      return updatedArray;
+    });
+  }
 
   const handleClickCancel = () => {
     hideDialogInputText();

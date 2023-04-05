@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {useRoute, useNavigation} from '@react-navigation/native';
 
 import {MyToDo} from '../entity/MyToDo';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -16,14 +16,18 @@ import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 
 const ToDoDetailScreen: React.FC = () => {
+  const navigation = useNavigation();
+
   const route = useRoute();
   const myToDo = (route?.params?.myToDo as MyToDo) || null;
+  const onUpdate = route?.params?.onUpdate
 
   const [inputText, setInputText] = useState(myToDo?.name ?? '');
   const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
   const [isDialogDeleteVisible, setDialogDeleteVisible] = useState(false);
 
   const showDialogUpdateInputText = () => {
+    console.log(route)
     setDialogUpdateVisible(true);
   };
 
@@ -39,13 +43,20 @@ const ToDoDetailScreen: React.FC = () => {
     setDialogDeleteVisible(false);
   };
 
+  const handleClickOkUpdateTodo = () => {
+    const myToDoUpdated = {...myToDo, name: inputText};
+    onUpdate(myToDoUpdated);
+    navigation.goBack();
+    hideDialogUpdateInputText()
+  }
+
   return (
     <SafeAreaView style={styles.containerSafeAreaView}>
       <DialogConfirm
         visible={isDialogUpdateVisible}
         tittle={Strings.update}
         message={Strings.do_you_want_update_your_todo}
-        onPressOk={hideDialogUpdateInputText}
+        onPressOk={handleClickOkUpdateTodo}
         onPressCancel={hideDialogUpdateInputText}></DialogConfirm>
 
       <DialogConfirm
