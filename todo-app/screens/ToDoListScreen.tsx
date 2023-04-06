@@ -1,11 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {
-  deleteDbToDoItemById,
-  getAllToDoItemsFromDb,
-  insertDbToDoItemById,
-  updateDbToDoItemById,
-} from '../sqlite/db';
 
 import {
   FlatList,
@@ -21,6 +15,7 @@ import {MyToDo} from '../entity/MyToDo';
 import {Colors} from '../utils/color/Colors';
 import DialogInputText from '../utils/dialog/DialogInputText';
 import {Dimens, NameScreen} from '../utils/Constans';
+import { getAllToDoItemsFromDb, insertDbToDoItemById, updateDbToDoItemById, deleteDbToDoItemById } from '../sqlite/Db';
 
 const ToDoListScreen: FC = () => {
   const navigation = useNavigation();

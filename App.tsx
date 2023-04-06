@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import {StatusBar} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,20 +7,19 @@ import ToDoListScreen from './todo-app/screens/ToDoListScreen';
 import ToDoDetailScreen from './todo-app/screens/ToDoDetailScreen';
 import {NameScreen, TittleToolBarScreen} from './todo-app/utils/Constans';
 import {Colors} from './todo-app/utils/color/Colors';
-import { createTable } from './todo-app/sqlite/db';
+import {createTable} from './todo-app/sqlite/Db';
 
 const Stack = createStackNavigator();
 
 const App: React.FunctionComponent = () => {
-
   useMemo(() => {
     createTable();
   }, []);
 
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor="#2196f3" barStyle="light-content" />
-      <Stack.Navigator initialRouteName="ToDoList">
+      <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
+      <Stack.Navigator initialRouteName={NameScreen.nameToDoListScreen}>
         <Stack.Screen
           name={NameScreen.nameToDoListScreen}
           component={ToDoListScreen}
