@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     fontSize: Dimens.sizeTextButton,
   },
   blankView: {
-    width: Dimens.blankView,
+    width: Dimens.widthBlankView,
   },
 });
 

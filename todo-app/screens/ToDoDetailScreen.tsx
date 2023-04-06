@@ -21,6 +21,7 @@ const ToDoDetailScreen: React.FC = () => {
   const route = useRoute();
   const myToDo = (route?.params?.myToDo as MyToDo) || null;
   const onUpdate = route?.params?.onUpdate
+  const onDelete = route?.params?.onDelete
 
   const [inputText, setInputText] = useState(myToDo?.name ?? '');
   const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
@@ -44,10 +45,16 @@ const ToDoDetailScreen: React.FC = () => {
   };
 
   const handleClickOkUpdateTodo = () => {
+    hideDialogUpdateInputText()
     const myToDoUpdated = {...myToDo, name: inputText};
     onUpdate(myToDoUpdated);
     navigation.goBack();
+  }
+
+  const handleClickOkDeletetodo = () => {
     hideDialogUpdateInputText()
+    onDelete();
+    navigation.goBack();
   }
 
   return (
@@ -63,7 +70,7 @@ const ToDoDetailScreen: React.FC = () => {
         visible={isDialogDeleteVisible}
         tittle={Strings.delete}
         message={Strings.do_you_want_delete_your_todo}
-        onPressOk={hideDialogDeleteInputText}
+        onPressOk={handleClickOkDeletetodo}
         onPressCancel={hideDialogDeleteInputText}></DialogConfirm>
 
       <TextInput

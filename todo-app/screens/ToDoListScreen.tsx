@@ -1,5 +1,11 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {
+  deleteDbToDoItemById,
+  getAllToDoItemsFromDb,
+  insertDbToDoItemById,
+  updateDbToDoItemById,
+} from '../sqlite/db';
 
 import {
   FlatList,
@@ -22,6 +28,12 @@ const ToDoListScreen: FC = () => {
   const [isDialogVisible, setDialogVisible] = useState(false);
   const [myToDoArray, setMyToDoArray] = useState<MyToDo[]>([]);
 
+  useEffect(() => {
+    getAllToDoItemsFromDb((arrayMyToDo: MyToDo[]) => {
+      setMyToDoArray(arrayMyToDo);
+    });
+  }, []);
+
   const showDialogInputText = () => {
     setDialogVisible(true);
   };
@@ -30,12 +42,15 @@ const ToDoListScreen: FC = () => {
     setDialogVisible(false);
   };
 
-  const handleClickOk = (text: string) => {
+  const handleClickOkAddMyToDo = (text: string) => {
     if (text.length === 0) {
       return;
     }
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const myToDo = new MyToDo(text, timestampInSeconds);
+
+    insertDbToDoItemById(myToDo);
+
     setMyToDoArray([...myToDoArray, myToDo]);
     hideDialogInputText();
   };
@@ -44,15 +59,17 @@ const ToDoListScreen: FC = () => {
     navigation.navigate(NameScreen.nameToDoDetailScreen, {
       myToDo: item,
       onUpdate: (updatedToDo: MyToDo) => {
-        updateMyTodo(updatedToDo)
+        updateMyToDo(updatedToDo);
       },
       onDelete: () => {
-        
-      }
+        deleteMyTodo(item);
+      },
     });
   };
 
-  const updateMyTodo = (updatedToDo: MyToDo) => {
+  const updateMyToDo = (updatedToDo: MyToDo) => {
+    updateDbToDoItemById(updatedToDo);
+
     // update myToDo at myToDoArray
     setMyToDoArray(prevArray => {
       const updatedArray = prevArray.map(existingToDo => {
@@ -64,7 +81,17 @@ const ToDoListScreen: FC = () => {
       });
       return updatedArray;
     });
-  }
+  };
+
+  const deleteMyTodo = (needDeleteToDo: MyToDo) => {
+    deleteDbToDoItemById(needDeleteToDo);
+
+    // delete myToDo at myToDoArray
+    const updatedToDoArray = myToDoArray.filter(
+      item => item.id !== needDeleteToDo.id,
+    );
+    setMyToDoArray(updatedToDoArray);
+  };
 
   const handleClickCancel = () => {
     hideDialogInputText();
@@ -96,7 +123,7 @@ const ToDoListScreen: FC = () => {
         <DialogInputText
           visible={isDialogVisible}
           tittle="Input your todo"
-          onPressOk={handleClickOk}
+          onPressOk={handleClickOkAddMyToDo}
           onPressCancel={handleClickCancel}></DialogInputText>
 
         <TouchableOpacity

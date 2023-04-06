@@ -25,5 +25,5 @@ export const Dimens = Object.freeze({
   heightButton: 45,
   widthButton: 120,
   sizeTextButton: 16,
-  blankView: 16,
+  widthBlankView: 16,
 });
