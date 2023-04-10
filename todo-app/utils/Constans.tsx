@@ -17,7 +17,7 @@ export const Strings = Object.freeze({
   do_you_want_update_your_todo: 'Do you want to update this todo ?',
   do_you_want_delete_your_todo: 'Do you want to delete this todo ?',
   please_fill_your_todo_name: 'Please fill your todo name',
-  error: 'error',
+  error: 'Error',
 });
 
 export const Dimens = Object.freeze({

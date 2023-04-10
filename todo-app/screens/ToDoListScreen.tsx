@@ -53,8 +53,6 @@ const ToDoListScreen: FC = () => {
   };
 
   const handleClickOkAddMyToDo = (text: string) => {
-    showToastInputEmpty();
-
     if (text.length === 0) {
       showToastInputEmpty();
       return;
