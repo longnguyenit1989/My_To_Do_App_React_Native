@@ -18,7 +18,7 @@ export function createTable() {
     tx.executeSql(
       'CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
       [],
-      () => console.log('Table created successfully.'),
+      () => {},
       (error: any) => console.log('Error creating table: ', error),
     );
   });
@@ -29,9 +29,7 @@ export function insertDbToDoItemById(item: MyToDo) {
     tx.executeSql(
       'INSERT INTO todos (name, id) VALUES (?, ?)',
       [item.name, item.id.toString()],
-      (tx: any, results: any) => {
-        console.log('Item inserted successfully.');
-      },
+      (tx: any, results: any) => {},
       (error: any) => console.log('Error inserting item: ', error),
     );
   });
@@ -66,9 +64,7 @@ export function updateDbToDoItemById(item: MyToDo) {
     tx.executeSql(
       'UPDATE todos SET name=? WHERE id=?',
       [item.name, item.id],
-      (tx: any, results: any) => {
-        console.log('Item updated successfully.');
-      },
+      (tx: any, results: any) => {},
       (error: any) => console.log('Error updating item: ', error),
     );
   });
@@ -79,9 +75,7 @@ export function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
     tx.executeSql(
       'DELETE FROM todos WHERE id=?',
       [needDeleteToDo.id],
-      (tx: any, results: any) => {
-        console.log('Item deleted successfully.');
-      },
+      (tx: any, results: any) => {},
       (error: any) => console.log('Error deleting item: ', error),
     );
   });

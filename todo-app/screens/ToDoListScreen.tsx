@@ -23,6 +23,7 @@ import {
   updateDbToDoItemById,
   deleteDbToDoItemById,
 } from '../sqlite/Db';
+import { pushLocalNotificationCrud } from '../noti/PushNotification';
 
 const ToDoListScreen: FC = () => {
   const navigation = useNavigation();
@@ -57,6 +58,7 @@ const ToDoListScreen: FC = () => {
       showToastInputEmpty();
       return;
     }
+    pushLocalNotificationCrud(Strings.notification, Strings.you_add_todo_success + text)
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const myToDo = new MyToDo(text, timestampInSeconds);
 
@@ -135,7 +137,8 @@ const ToDoListScreen: FC = () => {
           visible={isDialogVisible}
           tittle="Input your todo"
           onPressOk={handleClickOkAddMyToDo}
-          onPressCancel={handleClickCancel}/>
+          onPressCancel={handleClickCancel}
+        />
 
         <TouchableOpacity
           style={styles.floatingButton}

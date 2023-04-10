@@ -18,6 +18,10 @@ export const Strings = Object.freeze({
   do_you_want_delete_your_todo: 'Do you want to delete this todo ?',
   please_fill_your_todo_name: 'Please fill your todo name',
   error: 'Error',
+  notification: 'Notification',
+  you_update_todo_success: 'You update success: ',
+  you_delete_todo_success: 'You delete success: ',
+  you_add_todo_success: 'You add todo success: ',
 });
 
 export const Dimens = Object.freeze({
@@ -32,4 +36,8 @@ export const Dimens = Object.freeze({
 export const TypeToast = Object.freeze({
   error: 'error',
   success: 'success',
+});
+
+export const ChanelIdPushNoti = Object.freeze({
+  CRUD: 'CRUD',
 });

@@ -14,6 +14,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from '../utils/color/Colors';
 import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
+import { pushLocalNotificationCrud } from '../noti/PushNotification';
 
 const ToDoDetailScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -28,7 +29,6 @@ const ToDoDetailScreen: React.FC = () => {
   const [isDialogDeleteVisible, setDialogDeleteVisible] = useState(false);
 
   const showDialogUpdateInputText = () => {
-    console.log(route)
     setDialogUpdateVisible(true);
   };
 
@@ -45,6 +45,7 @@ const ToDoDetailScreen: React.FC = () => {
   };
 
   const handleClickOkUpdateTodo = () => {
+    pushLocalNotificationCrud(Strings.notification, Strings.you_update_todo_success + `${inputText}`)
     hideDialogUpdateInputText()
     const myToDoUpdated = {...myToDo, name: inputText};
     onUpdate(myToDoUpdated);
@@ -52,6 +53,7 @@ const ToDoDetailScreen: React.FC = () => {
   }
 
   const handleClickOkDeletetodo = () => {
+    pushLocalNotificationCrud(Strings.notification, Strings.you_delete_todo_success + `${myToDo.name}`)
     hideDialogUpdateInputText()
     onDelete();
     navigation.goBack();
