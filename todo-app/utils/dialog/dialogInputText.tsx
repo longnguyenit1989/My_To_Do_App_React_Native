@@ -35,10 +35,8 @@ const DialogInputText: React.FC<DialogInputTextProps> = (
 
   return (
     <Modal animationType="fade" transparent={true} visible={props.visible}>
-      <TouchableOpacity
-        style={styles.touchableOpacity}
-        onPress={props.onPressCancel}>
-        <View style={styles.dialogContainer}>
+      <View style={styles.containerView}>
+        <View style={styles.containerDialog}>
           <Text style={styles.titleDialog}>{props.tittle}</Text>
 
           <TextInput
@@ -49,25 +47,35 @@ const DialogInputText: React.FC<DialogInputTextProps> = (
             autoFocus={true}
           />
 
-          <TouchableOpacity
-            style={styles.touchableOpacityButtonOk}
-            onPress={clickOkButtonDialog}>
-            <Text style={styles.textButton}>{Strings.confirm}</Text>
-          </TouchableOpacity>
+          <View style={styles.viewHorizontalButton}>
+            <TouchableOpacity
+              style={styles.touchableOpacityButtonOk}
+              onPress={clickOkButtonDialog}>
+              <Text style={styles.textButton}>{Strings.ok}</Text>
+            </TouchableOpacity>
+
+            <View style={styles.blankView} />
+
+            <TouchableOpacity
+              style={styles.touchableOpacityButtonCancel}
+              onPress={props.onPressCancel}>
+              <Text style={styles.textButton}>{Strings.cancel}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  touchableOpacity: {
+  containerView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
   },
-  dialogContainer: {
+  containerDialog: {
     width: '80%',
     backgroundColor: 'white',
     borderRadius: 10,
@@ -86,21 +94,35 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray,
     borderRadius: 5,
     padding: 10,
-    marginBottom: 20,
     width: '100%',
   },
+  viewHorizontalButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 25,
+  },
   touchableOpacityButtonOk: {
-    marginTop: 15,
     width: Dimens.widthButton,
     height: Dimens.heightButton,
     backgroundColor: Colors.blue,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: Dimens.sizeTextButton,
+  },
+  touchableOpacityButtonCancel: {
+    width: Dimens.widthButton,
+    height: Dimens.heightButton,
+    backgroundColor: Colors.red,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textButton: {
     color: Colors.white,
+  },
+  blankView: {
+    width: Dimens.widthBlankView,
   },
 });
 

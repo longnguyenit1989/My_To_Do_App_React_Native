@@ -19,9 +19,8 @@ const DialogConfirm: React.FC<DialogConfirmProps> = (
 ) => {
   return (
     <Modal animationType="fade" transparent={true} visible={props.visible}>
-      <TouchableOpacity
-        style={styles.touchableOpacity}
-        onPress={props.onPressCancel}>
+      <View
+        style={styles.containerView}>
         <View style={styles.dialogContainer}>
           <Text style={styles.titleDialog}>{props.tittle}</Text>
 
@@ -39,13 +38,13 @@ const DialogConfirm: React.FC<DialogConfirmProps> = (
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  touchableOpacity: {
+  containerView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

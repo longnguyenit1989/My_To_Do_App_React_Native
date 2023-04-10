@@ -1,6 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
+import Toast from 'react-native-toast-message';
+
 import {
   FlatList,
   SafeAreaView,
@@ -14,8 +16,13 @@ import {MyToDo} from '../entity/MyToDo';
 
 import {Colors} from '../utils/color/Colors';
 import DialogInputText from '../utils/dialog/DialogInputText';
-import {Dimens, NameScreen} from '../utils/Constans';
-import { getAllToDoItemsFromDb, insertDbToDoItemById, updateDbToDoItemById, deleteDbToDoItemById } from '../sqlite/Db';
+import {Dimens, NameScreen, Strings, TypeToast} from '../utils/Constans';
+import {
+  getAllToDoItemsFromDb,
+  insertDbToDoItemById,
+  updateDbToDoItemById,
+  deleteDbToDoItemById,
+} from '../sqlite/Db';
 
 const ToDoListScreen: FC = () => {
   const navigation = useNavigation();
@@ -37,8 +44,19 @@ const ToDoListScreen: FC = () => {
     setDialogVisible(false);
   };
 
+  const showToastInputEmpty = () => {
+    Toast.show({
+      type: TypeToast.error,
+      text1: Strings.error,
+      text2: Strings.please_fill_your_todo_name,
+    });
+  };
+
   const handleClickOkAddMyToDo = (text: string) => {
+    showToastInputEmpty();
+
     if (text.length === 0) {
+      showToastInputEmpty();
       return;
     }
     const timestampInSeconds = Math.floor(Date.now() / 1000);
@@ -119,7 +137,7 @@ const ToDoListScreen: FC = () => {
           visible={isDialogVisible}
           tittle="Input your todo"
           onPressOk={handleClickOkAddMyToDo}
-          onPressCancel={handleClickCancel}></DialogInputText>
+          onPressCancel={handleClickCancel}/>
 
         <TouchableOpacity
           style={styles.floatingButton}
@@ -127,6 +145,8 @@ const ToDoListScreen: FC = () => {
           <Text style={styles.floatingButtonText}>+</Text>
         </TouchableOpacity>
       </SafeAreaView>
+
+      <Toast autoHide={true} visibilityTime={2500} />
     </View>
   );
 };

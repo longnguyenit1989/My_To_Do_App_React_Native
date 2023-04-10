@@ -18,6 +18,7 @@
     "react-native-safe-area-context": "^4.5.0",
     "react-native-screens": "^3.20.0",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-native-toast-message": "^2.1.6",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {

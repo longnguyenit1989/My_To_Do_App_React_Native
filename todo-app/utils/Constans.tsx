@@ -14,9 +14,10 @@ export const Strings = Object.freeze({
   update: 'Update',
   delete: 'Delete',
   add: 'Add',
-  confirm: 'Confirm',
   do_you_want_update_your_todo: 'Do you want to update this todo ?',
   do_you_want_delete_your_todo: 'Do you want to delete this todo ?',
+  please_fill_your_todo_name: 'Please fill your todo name',
+  error: 'error',
 });
 
 export const Dimens = Object.freeze({
@@ -26,4 +27,9 @@ export const Dimens = Object.freeze({
   widthButton: 120,
   sizeTextButton: 16,
   widthBlankView: 16,
+});
+
+export const TypeToast = Object.freeze({
+  error: 'error',
+  success: 'success',
 });
