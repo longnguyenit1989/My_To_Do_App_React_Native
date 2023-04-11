@@ -16,7 +16,7 @@ import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 import {pushLocalNotificationCrud} from '../noti/PushNotification';
 
-interface RouteParams {
+export interface RouteParams {
   myToDo?: MyToDo;
   onUpdate?: (updatedTodo: MyToDo) => void;
   onDelete?: () => void;

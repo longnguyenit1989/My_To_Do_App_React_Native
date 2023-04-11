@@ -24,6 +24,7 @@ import {
   deleteDbToDoItemById,
 } from '../sqlite/Db';
 import {pushLocalNotificationCrud} from '../noti/PushNotification';
+import { RouteParams } from './ToDoDetailScreen';
 
 const ToDoListScreen: FC = () => {
   const navigation = useNavigation();
@@ -72,7 +73,7 @@ const ToDoListScreen: FC = () => {
   };
 
   const handleClickItemToDo = (item: MyToDo) => {
-    navigation.navigate(NameScreen.nameToDoDetailScreen, {
+    const routeParams: RouteParams = {
       myToDo: item,
       onUpdate: (updatedToDo: MyToDo) => {
         updateMyToDo(updatedToDo);
@@ -80,7 +81,9 @@ const ToDoListScreen: FC = () => {
       onDelete: () => {
         deleteMyTodo(item);
       },
-    });
+    };
+
+    navigation.navigate(NameScreen.nameToDoDetailScreen, routeParams);
   };
 
   const updateMyToDo = (updatedToDo: MyToDo) => {
