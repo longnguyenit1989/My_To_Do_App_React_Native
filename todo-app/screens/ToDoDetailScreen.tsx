@@ -14,15 +14,19 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from '../utils/color/Colors';
 import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
-import { pushLocalNotificationCrud } from '../noti/PushNotification';
+import {pushLocalNotificationCrud} from '../noti/PushNotification';
+
+interface RouteParams {
+  myToDo?: MyToDo;
+  onUpdate?: (updatedTodo: MyToDo) => void;
+  onDelete?: () => void;
+}
 
 const ToDoDetailScreen: React.FC = () => {
   const navigation = useNavigation();
 
   const route = useRoute();
-  const myToDo = (route?.params?.myToDo as MyToDo) || null;
-  const onUpdate = route?.params?.onUpdate
-  const onDelete = route?.params?.onDelete
+  const {myToDo, onUpdate, onDelete}: RouteParams = route?.params ?? {};
 
   const [inputText, setInputText] = useState(myToDo?.name ?? '');
   const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
@@ -45,19 +49,30 @@ const ToDoDetailScreen: React.FC = () => {
   };
 
   const handleClickOkUpdateTodo = () => {
-    pushLocalNotificationCrud(Strings.notification, Strings.you_update_todo_success + `${inputText}`)
-    hideDialogUpdateInputText()
-    const myToDoUpdated = {...myToDo, name: inputText};
-    onUpdate(myToDoUpdated);
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_update_todo_success + `${inputText}`,
+    );
+    hideDialogUpdateInputText();
+    
+    const myToDoUpdated = {...myToDo, name: inputText, id: myToDo?.id ?? 0};
+    if (onUpdate != null && onUpdate != undefined) {
+      onUpdate(myToDoUpdated);
+    }
     navigation.goBack();
-  }
+  };
 
   const handleClickOkDeletetodo = () => {
-    pushLocalNotificationCrud(Strings.notification, Strings.you_delete_todo_success + `${myToDo.name}`)
-    hideDialogUpdateInputText()
-    onDelete();
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_delete_todo_success + `${myToDo?.name ?? ''}`,
+    );
+    hideDialogUpdateInputText();
+    if (onDelete != null && onDelete != undefined) {
+      onDelete();
+    }
     navigation.goBack();
-  }
+  };
 
   return (
     <SafeAreaView style={styles.containerSafeAreaView}>

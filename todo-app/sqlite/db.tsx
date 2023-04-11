@@ -1,20 +1,17 @@
 import SQLite from 'react-native-sqlite-storage';
 import {MyToDo} from '../entity/MyToDo';
 
-const databaseName = 'MyDatabase.db';
-const databaseVersion = '1.0';
-const databaseDisplayName = 'My Database';
-const databaseSize = 200000;
+const databaseParams = {
+  name: 'MyDatabase.db',
+  version: '1.0',
+  displayName: 'My Database',
+  size: 200000,
+};
 
-const db = SQLite.openDatabase(
-  databaseName,
-  databaseVersion,
-  databaseDisplayName,
-  databaseSize,
-);
+const db = SQLite.openDatabase(databaseParams);
 
-export function createTable() {
-  db.transaction((tx: any) => {
+export async function createTable() {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
       [],
@@ -24,8 +21,8 @@ export function createTable() {
   });
 }
 
-export function insertDbToDoItemById(item: MyToDo) {
-  db.transaction((tx: any) => {
+export async function insertDbToDoItemById(item: MyToDo) {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'INSERT INTO todos (name, id) VALUES (?, ?)',
       [item.name, item.id.toString()],
@@ -35,11 +32,11 @@ export function insertDbToDoItemById(item: MyToDo) {
   });
 }
 
-export function getToDoItemFromDbById(
+export async function getToDoItemFromDbById(
   id: number,
   callback: (item: MyToDo | null) => void,
 ) {
-  db.transaction((tx: any) => {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'SELECT * FROM todos WHERE id=?',
       [id],
@@ -59,8 +56,8 @@ export function getToDoItemFromDbById(
   });
 }
 
-export function updateDbToDoItemById(item: MyToDo) {
-  db.transaction((tx: any) => {
+export async function updateDbToDoItemById(item: MyToDo) {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'UPDATE todos SET name=? WHERE id=?',
       [item.name, item.id],
@@ -70,8 +67,8 @@ export function updateDbToDoItemById(item: MyToDo) {
   });
 }
 
-export function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
-  db.transaction((tx: any) => {
+export async function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'DELETE FROM todos WHERE id=?',
       [needDeleteToDo.id],
@@ -81,8 +78,10 @@ export function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
   });
 }
 
-export function getAllToDoItemsFromDb(callback: (items: MyToDo[]) => void) {
-  db.transaction((tx: any) => {
+export async function getAllToDoItemsFromDb(
+  callback: (items: MyToDo[]) => void,
+) {
+  (await db).transaction((tx: any) => {
     tx.executeSql(
       'SELECT * FROM todos',
       [],
