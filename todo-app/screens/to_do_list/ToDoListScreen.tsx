@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -17,7 +18,6 @@ import {MyToDo} from '../../entity/MyToDo';
 import {Colors} from '../../utils/color/Colors';
 import DialogInputText from '../../utils/dialog/DialogInputText';
 import {Dimens, NameScreen, Strings, TypeToast} from '../../utils/Constans';
-import {updateDbToDoItemById, deleteDbToDoItemById} from '../../sqlite/Db';
 import {RouteParams} from '../ToDoDetailScreen';
 import {useAppDispatch} from '../../store/Hook';
 import {myToDoActions} from '../../reducers/MyToDoReducer';
@@ -35,7 +35,6 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
   const _dispatch = useAppDispatch();
 
   const [isDialogVisible, setDialogVisible] = useState(false);
-  const [myToDoArray, setMyToDoArray] = useState<MyToDo[]>([]);
 
   const showDialogInputText = () => {
     setDialogVisible(true);
@@ -65,38 +64,9 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
   const handleClickItemToDo = (item: MyToDo) => {
     const routeParams: RouteParams = {
       myToDo: item,
-      onDelete: () => {
-        deleteMyTodo(item);
-      },
     };
 
     navigation.navigate(NameScreen.nameToDoDetailScreen, routeParams);
-  };
-
-  const updateMyToDo = (updatedToDo: MyToDo) => {
-    updateDbToDoItemById(updatedToDo);
-
-    // update myToDo at myToDoArray
-    setMyToDoArray(prevArray => {
-      const updatedArray = prevArray.map(existingToDo => {
-        if (existingToDo.id === updatedToDo.id) {
-          return updatedToDo;
-        } else {
-          return existingToDo;
-        }
-      });
-      return updatedArray;
-    });
-  };
-
-  const deleteMyTodo = (needDeleteToDo: MyToDo) => {
-    deleteDbToDoItemById(needDeleteToDo);
-
-    // delete myToDo at myToDoArray
-    const updatedToDoArray = myToDoArray.filter(
-      item => item.id !== needDeleteToDo.id,
-    );
-    setMyToDoArray(updatedToDoArray);
   };
 
   const handleClickCancel = () => {
@@ -109,9 +79,11 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
         onPress={() => handleClickItemToDo(item)}
         style={styles.containerItemToDo}>
         <View style={styles.circleItemToDo}>
-          <Text style={styles.firstCharacterItemToDo}>{item.name[0] ?? ""}</Text>
+          <Text style={styles.firstCharacterItemToDo}>
+            {item.name[0] ?? ''}
+          </Text>
         </View>
-        <Text style={styles.nameItemToDo}>{item.name ?? ""}</Text>
+        <Text style={styles.nameItemToDo}>{item.name ?? ''}</Text>
       </TouchableOpacity>
     );
   };
@@ -139,6 +111,15 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
           <Text style={styles.floatingButtonText}>+</Text>
         </TouchableOpacity>
       </SafeAreaView>
+
+      <View
+        style={[
+          styles.loadingContainer,
+          {display: props.isLoading ? 'flex' : 'none'},
+        ]}>
+        <View style={styles.loadingBackground}></View>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
 
       <Toast autoHide={true} visibilityTime={2500} />
     </View>
@@ -198,6 +179,24 @@ const styles = StyleSheet.create({
   nameItemToDo: {
     fontSize: 16,
     color: Colors.black,
+  },
+  loadingContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingBackground: {
+    backgroundColor: Colors.gray,
+    opacity: 0.5,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });
 

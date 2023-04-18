@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StyleSheet, TextInput, TouchableOpacity, Text} from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/native';
 
 import {MyToDo} from '../entity/MyToDo';
@@ -14,13 +7,11 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Colors} from '../utils/color/Colors';
 import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
-import {pushLocalNotificationCrud} from '../noti/PushNotification';
-import { useAppDispatch } from '../store/Hook';
-import { myToDoActions } from '../reducers/MyToDoReducer';
+import {useAppDispatch} from '../store/Hook';
+import {myToDoActions} from '../reducers/MyToDoReducer';
 
 export interface RouteParams {
   myToDo?: MyToDo;
-  onDelete?: () => void;
 }
 
 const ToDoDetailScreen: React.FC = () => {
@@ -28,7 +19,7 @@ const ToDoDetailScreen: React.FC = () => {
   const _dispatch = useAppDispatch();
 
   const route = useRoute();
-  const {myToDo, onDelete}: RouteParams = route?.params ?? {};
+  const {myToDo}: RouteParams = route?.params ?? {};
 
   const [inputText, setInputText] = useState(myToDo?.name ?? '');
   const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
@@ -52,19 +43,19 @@ const ToDoDetailScreen: React.FC = () => {
 
   const handleClickOkUpdateTodo = () => {
     hideDialogUpdateInputText();
-    const myToDoUpdated = {...myToDo, name: inputText, id: myToDo?.id ?? 0};
-    _dispatch(myToDoActions.updateDbToDoItemByIdIsLoading(myToDoUpdated))
+    const myToDoUpdated = {
+      ...myToDo,
+      name: inputText ?? '',
+      id: myToDo?.id ?? 0,
+    };
+    _dispatch(myToDoActions.updateDbToDoItemByIdIsLoading(myToDoUpdated));
     navigation.goBack();
   };
 
   const handleClickOkDeletetodo = () => {
-    pushLocalNotificationCrud(
-      Strings.notification,
-      Strings.you_delete_todo_success + `${myToDo?.name ?? ''}`,
-    );
     hideDialogUpdateInputText();
-    if (onDelete != null && onDelete != undefined) {
-      onDelete();
+    if (myToDo != null && myToDo != undefined) {
+      _dispatch(myToDoActions.deleteDbToDoItemByIdIsLoading(myToDo));
     }
     navigation.goBack();
   };

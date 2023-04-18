@@ -33,7 +33,6 @@ const myToDoSlice = createSlice({
       ];
     },
     getListMyToDoFromSqliteFailed(myToDoState: MyToDoState) {
-      //get list my todo failed
       myToDoState.isLoading = false;
     },
     insertDbToDoItemByIdIsLoading(
@@ -43,7 +42,6 @@ const myToDoSlice = createSlice({
       myToDoState.isLoading = true;
     },
     insertDbToDoItemByIdSuccess(
-      //insert todo to db success
       myToDoState: MyToDoState,
       actionInsert: PayloadAction<MyToDo>,
     ) {
@@ -54,7 +52,6 @@ const myToDoSlice = createSlice({
       ];
     },
     insertDbToDoItemByIdFailed(myToDoState: MyToDoState) {
-      //insert todo to db failed
       myToDoState.isLoading = false;
     },
     updateDbToDoItemByIdIsLoading(
@@ -64,7 +61,6 @@ const myToDoSlice = createSlice({
       myToDoState.isLoading = true;
     },
     updateDbToDoItemByIdSuccess(
-      //update todo to db success
       myToDoState: MyToDoState,
       actionUpdate: PayloadAction<MyToDo>,
     ) {
@@ -80,8 +76,26 @@ const myToDoSlice = createSlice({
       myToDoState.listMyToDo = updatedArray;
     },
     updateDbToDoItemByIdFailed(myToDoState: MyToDoState) {
-      //update todo to db failed
       myToDoState.isLoading = false;
+    },
+    deleteDbToDoItemByIdIsLoading(
+      myToDoState: MyToDoState,
+      actionDelete: PayloadAction<MyToDo>,
+    ) {
+      myToDoState.isLoading = true;
+    },
+    deleteDbToDoItemByIdSuccess(
+      myToDoState: MyToDoState,
+      actionDelte: PayloadAction<MyToDo>,
+    ) {
+      myToDoState.isLoading = false;
+      const updatedToDoArray = myToDoState.listMyToDo.filter(
+        item => item.id !== actionDelte.payload.id,
+      );
+      myToDoState.listMyToDo = updatedToDoArray;
+    },
+    deleteDbToDoItemByIdIsFailed(myToDoState: MyToDoState) {
+      myToDoState.isLoading = true;
     },
   },
 });

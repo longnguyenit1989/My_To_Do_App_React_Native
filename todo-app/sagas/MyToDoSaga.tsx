@@ -3,6 +3,7 @@ import {PayloadAction} from '@reduxjs/toolkit';
 import {MyToDo} from '../entity/MyToDo';
 import {myToDoActions} from '../reducers/MyToDoReducer';
 import {
+  deleteDbToDoItemById,
   getAllToDoItemsFromDb,
   insertDbToDoItemById,
   updateDbToDoItemById,
@@ -40,19 +41,31 @@ function* handleInsertToDoSqlite(action: PayloadAction<string>) {
   }
 }
 
-function* handleUpdateToDoSqlite(
-  actionUpdate: PayloadAction<MyToDo>
-) {
+function* handleUpdateToDoSqlite(actionUpdate: PayloadAction<MyToDo>) {
   try {
     updateDbToDoItemById(actionUpdate.payload);
     yield put(myToDoActions.updateDbToDoItemByIdSuccess(actionUpdate.payload));
-  
+
     pushLocalNotificationCrud(
       Strings.notification,
       Strings.you_update_todo_success + `${actionUpdate.payload.name}`,
     );
   } catch (error) {
-    yield put(myToDoActions.updateDbToDoItemByIdFailed)
+    yield put(myToDoActions.updateDbToDoItemByIdFailed);
+  }
+}
+
+function* handleDeleteToDoSqlite(actionDelete: PayloadAction<MyToDo>) {
+  try {
+    deleteDbToDoItemById(actionDelete.payload);
+    yield put(myToDoActions.deleteDbToDoItemByIdSuccess(actionDelete.payload));
+
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_delete_todo_success + `${actionDelete.payload?.name ?? ''}`,
+    );
+  } catch (error) {
+    yield put(myToDoActions.deleteDbToDoItemByIdIsFailed);
   }
 }
 
@@ -74,5 +87,12 @@ export function* updateMyToDoSqliteSaga() {
   yield takeLatest(
     myToDoActions.updateDbToDoItemByIdIsLoading.type,
     handleUpdateToDoSqlite,
+  );
+}
+
+export function* deleteMyToDoSqliteSaga() {
+  yield takeLatest(
+    myToDoActions.deleteDbToDoItemByIdIsLoading.type,
+    handleDeleteToDoSqlite,
   );
 }
