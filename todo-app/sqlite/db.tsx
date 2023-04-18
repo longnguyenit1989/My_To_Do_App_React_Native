@@ -78,26 +78,26 @@ export async function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
   });
 }
 
-export async function getAllToDoItemsFromDb(
-  callback: (items: MyToDo[]) => void,
-) {
-  (await db).transaction((tx: any) => {
-    tx.executeSql(
-      'SELECT * FROM todos',
-      [],
-      (tx: any, results: {rows: any}) => {
-        const rows = results.rows;
-        const items: MyToDo[] = [];
+export async function getAllToDoItemsFromDb(): Promise<MyToDo[]> {
+  return new Promise(async (resolve, reject) => {
+    (await db).transaction((tx: any) => {
+      tx.executeSql(
+        'SELECT * FROM todos',
+        [],
+        (tx: any, results: {rows: any}) => {
+          const rows = results.rows;
+          const items: MyToDo[] = [];
 
-        for (let i = 0; i < rows.length; i++) {
-          const row = rows.item(i);
-          const item = new MyToDo(row.name, row.id);
-          items.push(item);
-        }
+          for (let i = 0; i < rows.length; i++) {
+            const row = rows.item(i);
+            const item = new MyToDo(row.name, row.id);
+            items.push(item);
+          }
 
-        callback(items);
-      },
-      (error: any) => console.log('Error getting items: ', error),
-    );
+          resolve(items);
+        },
+        (error: any) => reject(error),
+      );
+    });
   });
 }

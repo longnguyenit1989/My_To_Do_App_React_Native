@@ -1,5 +1,5 @@
 export const NameScreen = Object.freeze({
-  nameToDoListScreen: 'ToDoList',
+  nameToDoListContainer: 'ToDoListContainer',
   nameToDoDetailScreen: 'ToDoDetail',
 });
 
@@ -40,4 +40,10 @@ export const TypeToast = Object.freeze({
 
 export const ChanelIdPushNoti = Object.freeze({
   CRUD: 'CRUD',
+});
+
+export const ReduxContants = Object.freeze({
+  SLICE_MY_TODO: 'slice_my_todo',
+  REDUCER_ROOT_KEY: 'reducer_root_key',
+  REDUCER_WHITE_LIST: 'reducer_white_list',
 });

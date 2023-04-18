@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import Toast from 'react-native-toast-message';
@@ -12,31 +12,30 @@ import {
   View,
 } from 'react-native';
 
-import {MyToDo} from '../entity/MyToDo';
+import {MyToDo} from '../../entity/MyToDo';
 
-import {Colors} from '../utils/color/Colors';
-import DialogInputText from '../utils/dialog/DialogInputText';
-import {Dimens, NameScreen, Strings, TypeToast} from '../utils/Constans';
-import {
-  getAllToDoItemsFromDb,
-  insertDbToDoItemById,
-  updateDbToDoItemById,
-  deleteDbToDoItemById,
-} from '../sqlite/Db';
-import {pushLocalNotificationCrud} from '../noti/PushNotification';
-import { RouteParams } from './ToDoDetailScreen';
+import {Colors} from '../../utils/color/Colors';
+import DialogInputText from '../../utils/dialog/DialogInputText';
+import {Dimens, NameScreen, Strings, TypeToast} from '../../utils/Constans';
+import {updateDbToDoItemById, deleteDbToDoItemById} from '../../sqlite/Db';
+import {RouteParams} from '../ToDoDetailScreen';
+import {useAppDispatch} from '../../store/Hook';
+import {myToDoActions} from '../../reducers/MyToDoReducer';
 
-const ToDoListScreen: FC = () => {
+interface ToDoListScreenProps {
+  isLoading: boolean;
+  listMyTodo: Array<MyToDo>;
+}
+
+const ToDoListScreen: React.FC<ToDoListScreenProps> = (
+  props: ToDoListScreenProps,
+) => {
   const navigation = useNavigation();
+
+  const _dispatch = useAppDispatch();
 
   const [isDialogVisible, setDialogVisible] = useState(false);
   const [myToDoArray, setMyToDoArray] = useState<MyToDo[]>([]);
-
-  useEffect(() => {
-    getAllToDoItemsFromDb((arrayMyToDo: MyToDo[]) => {
-      setMyToDoArray(arrayMyToDo);
-    });
-  }, []);
 
   const showDialogInputText = () => {
     setDialogVisible(true);
@@ -59,16 +58,7 @@ const ToDoListScreen: FC = () => {
       showToastInputEmpty();
       return;
     }
-    pushLocalNotificationCrud(
-      Strings.notification,
-      Strings.you_add_todo_success + text,
-    );
-    const timestampInSeconds = Math.floor(Date.now() / 1000);
-    const myToDo = new MyToDo(text, timestampInSeconds);
-
-    insertDbToDoItemById(myToDo);
-
-    setMyToDoArray([...myToDoArray, myToDo]);
+    _dispatch(myToDoActions.insertDbToDoItemByIdIsLoading(text));
     hideDialogInputText();
   };
 
@@ -122,9 +112,9 @@ const ToDoListScreen: FC = () => {
         onPress={() => handleClickItemToDo(item)}
         style={styles.containerItemToDo}>
         <View style={styles.circleItemToDo}>
-          <Text style={styles.firstCharacterItemToDo}>{item.name[0]}</Text>
+          <Text style={styles.firstCharacterItemToDo}>{item.name[0] ?? ""}</Text>
         </View>
-        <Text style={styles.nameItemToDo}>{item.name}</Text>
+        <Text style={styles.nameItemToDo}>{item.name ?? ""}</Text>
       </TouchableOpacity>
     );
   };
@@ -133,7 +123,7 @@ const ToDoListScreen: FC = () => {
     <View style={{flex: 1}}>
       <FlatList
         style={styles.containerFlastList}
-        data={myToDoArray}
+        data={props.listMyTodo}
         renderItem={({item}) => <ListItem item={item} />}
         keyExtractor={myToDo => myToDo.id.toString()}
       />
