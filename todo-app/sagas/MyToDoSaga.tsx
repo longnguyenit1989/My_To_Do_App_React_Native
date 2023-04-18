@@ -69,28 +69,19 @@ function* handleDeleteToDoSqlite(actionDelete: PayloadAction<MyToDo>) {
   }
 }
 
-export function* getListMyToDoSaga() {
+export function* listMyToDoSaga() {
   yield takeLatest(
     myToDoActions.getListMyToDoFromSqliteIsLoading.type,
     handleGetListMyToDoFromSqlite,
   );
-}
-
-export function* insertMyToDoSqliteSaga() {
   yield takeLatest(
     myToDoActions.insertDbToDoItemByIdIsLoading.type,
     handleInsertToDoSqlite,
   );
-}
-
-export function* updateMyToDoSqliteSaga() {
   yield takeLatest(
     myToDoActions.updateDbToDoItemByIdIsLoading.type,
     handleUpdateToDoSqlite,
   );
-}
-
-export function* deleteMyToDoSqliteSaga() {
   yield takeLatest(
     myToDoActions.deleteDbToDoItemByIdIsLoading.type,
     handleDeleteToDoSqlite,

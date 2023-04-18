@@ -21,7 +21,6 @@ const myToDoSlice = createSlice({
       myToDoState.isLoading = true;
     },
     getListMyToDoFromSqliteSuccess(
-      //get list my todo success
       myToDoState: MyToDoState,
       actionGetListMyToDo: PayloadAction<Array<MyToDo>>,
     ) {
