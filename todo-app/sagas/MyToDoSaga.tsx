@@ -2,7 +2,11 @@ import {call, put, takeLatest} from 'redux-saga/effects';
 import {PayloadAction} from '@reduxjs/toolkit';
 import {MyToDo} from '../entity/MyToDo';
 import {myToDoActions} from '../reducers/MyToDoReducer';
-import {getAllToDoItemsFromDb, insertDbToDoItemById} from '../sqlite/Db';
+import {
+  getAllToDoItemsFromDb,
+  insertDbToDoItemById,
+  updateDbToDoItemById,
+} from '../sqlite/Db';
 import {pushLocalNotificationCrud} from '../noti/PushNotification';
 import {Strings} from '../utils/Constans';
 
@@ -15,17 +19,41 @@ function* handleGetListMyToDoFromSqlite(action: PayloadAction) {
   }
 }
 
-function* handleInsertToDoToSqlite(action: PayloadAction<string>) {
-  pushLocalNotificationCrud(
-    Strings.notification,
-    Strings.you_add_todo_success + action.payload,
-  );
+function* handleInsertToDoSqlite(action: PayloadAction<string>) {
   try {
     const timestampInSeconds = Math.floor(Date.now() / 1000);
     const myToDo = new MyToDo(action.payload, timestampInSeconds);
     insertDbToDoItemById(myToDo);
-    yield put(myToDoActions.insertDbToDoItemByIdSuccess(myToDo))
-  } catch (error) {}
+    yield put(myToDoActions.insertDbToDoItemByIdSuccess(myToDo));
+
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_add_todo_success + action.payload,
+    );
+  } catch (error) {
+    yield put(myToDoActions.insertDbToDoItemByIdFailed);
+
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_add_todo_failed + action.payload,
+    );
+  }
+}
+
+function* handleUpdateToDoSqlite(
+  actionUpdate: PayloadAction<MyToDo>
+) {
+  try {
+    updateDbToDoItemById(actionUpdate.payload);
+    yield put(myToDoActions.updateDbToDoItemByIdSuccess(actionUpdate.payload));
+  
+    pushLocalNotificationCrud(
+      Strings.notification,
+      Strings.you_update_todo_success + `${actionUpdate.payload.name}`,
+    );
+  } catch (error) {
+    yield put(myToDoActions.updateDbToDoItemByIdFailed)
+  }
 }
 
 export function* getListMyToDoSaga() {
@@ -35,9 +63,16 @@ export function* getListMyToDoSaga() {
   );
 }
 
-export function* insertMyToDoAtSqliteSaga() {
+export function* insertMyToDoSqliteSaga() {
   yield takeLatest(
     myToDoActions.insertDbToDoItemByIdIsLoading.type,
-    handleInsertToDoToSqlite,
+    handleInsertToDoSqlite,
+  );
+}
+
+export function* updateMyToDoSqliteSaga() {
+  yield takeLatest(
+    myToDoActions.updateDbToDoItemByIdIsLoading.type,
+    handleUpdateToDoSqlite,
   );
 }

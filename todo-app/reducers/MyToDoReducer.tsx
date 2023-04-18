@@ -23,26 +23,65 @@ const myToDoSlice = createSlice({
     getListMyToDoFromSqliteSuccess(
       //get list my todo success
       myToDoState: MyToDoState,
-      action: PayloadAction<Array<MyToDo>>,
+      actionGetListMyToDo: PayloadAction<Array<MyToDo>>,
     ) {
       myToDoState.isLoading = false;
       myToDoState.listMyToDo.splice(0, myToDoState.listMyToDo.length);
-      myToDoState.listMyToDo = [...myToDoState.listMyToDo, ...action.payload];
+      myToDoState.listMyToDo = [
+        ...myToDoState.listMyToDo,
+        ...actionGetListMyToDo.payload,
+      ];
     },
     getListMyToDoFromSqliteFailed(myToDoState: MyToDoState) {
       //get list my todo failed
       myToDoState.isLoading = false;
     },
-    insertDbToDoItemByIdIsLoading(myToDoState: MyToDoState, action: PayloadAction<string>) {
+    insertDbToDoItemByIdIsLoading(
+      myToDoState: MyToDoState,
+      actionInsert: PayloadAction<string>,
+    ) {
       myToDoState.isLoading = true;
     },
     insertDbToDoItemByIdSuccess(
       //insert todo to db success
       myToDoState: MyToDoState,
-      action: PayloadAction<MyToDo>,
+      actionInsert: PayloadAction<MyToDo>,
     ) {
       myToDoState.isLoading = false;
-      myToDoState.listMyToDo = [...myToDoState.listMyToDo, action.payload];
+      myToDoState.listMyToDo = [
+        ...myToDoState.listMyToDo,
+        actionInsert.payload,
+      ];
+    },
+    insertDbToDoItemByIdFailed(myToDoState: MyToDoState) {
+      //insert todo to db failed
+      myToDoState.isLoading = false;
+    },
+    updateDbToDoItemByIdIsLoading(
+      myToDoState: MyToDoState,
+      actionUpdate: PayloadAction<MyToDo>,
+    ) {
+      myToDoState.isLoading = true;
+    },
+    updateDbToDoItemByIdSuccess(
+      //update todo to db success
+      myToDoState: MyToDoState,
+      actionUpdate: PayloadAction<MyToDo>,
+    ) {
+      myToDoState.isLoading = false;
+      const updatedArray = myToDoState.listMyToDo.map(existingToDo => {
+        if (existingToDo.id === actionUpdate.payload.id) {
+          return actionUpdate.payload;
+        } else {
+          return existingToDo;
+        }
+      });
+
+      myToDoState.listMyToDo = updatedArray;
+    },
+    updateDbToDoItemByIdFailed(myToDoState: MyToDoState) {
+      //update todo to db failed
+      myToDoState.isLoading = false;
     },
   },
 });

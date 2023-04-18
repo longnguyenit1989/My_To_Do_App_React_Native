@@ -65,9 +65,6 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
   const handleClickItemToDo = (item: MyToDo) => {
     const routeParams: RouteParams = {
       myToDo: item,
-      onUpdate: (updatedToDo: MyToDo) => {
-        updateMyToDo(updatedToDo);
-      },
       onDelete: () => {
         deleteMyTodo(item);
       },

@@ -22,6 +22,7 @@ export const Strings = Object.freeze({
   you_update_todo_success: 'You update success: ',
   you_delete_todo_success: 'You delete success: ',
   you_add_todo_success: 'You add todo success: ',
+  you_add_todo_failed: 'You add todo failed: ',
 });
 
 export const Dimens = Object.freeze({

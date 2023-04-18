@@ -15,18 +15,20 @@ import {Colors} from '../utils/color/Colors';
 import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 import {pushLocalNotificationCrud} from '../noti/PushNotification';
+import { useAppDispatch } from '../store/Hook';
+import { myToDoActions } from '../reducers/MyToDoReducer';
 
 export interface RouteParams {
   myToDo?: MyToDo;
-  onUpdate?: (updatedTodo: MyToDo) => void;
   onDelete?: () => void;
 }
 
 const ToDoDetailScreen: React.FC = () => {
   const navigation = useNavigation();
+  const _dispatch = useAppDispatch();
 
   const route = useRoute();
-  const {myToDo, onUpdate, onDelete}: RouteParams = route?.params ?? {};
+  const {myToDo, onDelete}: RouteParams = route?.params ?? {};
 
   const [inputText, setInputText] = useState(myToDo?.name ?? '');
   const [isDialogUpdateVisible, setDialogUpdateVisible] = useState(false);
@@ -49,16 +51,9 @@ const ToDoDetailScreen: React.FC = () => {
   };
 
   const handleClickOkUpdateTodo = () => {
-    pushLocalNotificationCrud(
-      Strings.notification,
-      Strings.you_update_todo_success + `${inputText}`,
-    );
     hideDialogUpdateInputText();
-    
     const myToDoUpdated = {...myToDo, name: inputText, id: myToDo?.id ?? 0};
-    if (onUpdate != null && onUpdate != undefined) {
-      onUpdate(myToDoUpdated);
-    }
+    _dispatch(myToDoActions.updateDbToDoItemByIdIsLoading(myToDoUpdated))
     navigation.goBack();
   };
 
