@@ -8,9 +8,19 @@ export const TittleToolBarScreen = Object.freeze({
   tittleToDoDetailScreen: 'Todo Detail',
 });
 
+export const PlatformName = Object.freeze({
+  android: 'android',
+  ios: 'ios',
+});
+
 export const DrawerNameScreen = Object.freeze({
-  nameDrawerToDoList: 'DrawerToDoList'
-})
+  nameDrawerToDoList: 'DrawerToDoList',
+});
+
+export const LabelDrawerItem = Object.freeze({
+  load_data_to_firebase: 'Load data to firebase',
+  get_data_from_firebase: 'Get data from firebase',
+});
 
 export const Strings = Object.freeze({
   ok: 'Ok',

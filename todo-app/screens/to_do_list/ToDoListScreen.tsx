@@ -21,6 +21,7 @@ import {Dimens, NameScreen, Strings, TypeToast} from '../../utils/Constans';
 import {RouteParams} from '../ToDoDetailScreen';
 import {useAppDispatch} from '../../store/Hook';
 import {myToDoActions} from '../../reducers/MyToDoReducer';
+import {showToastInputEmpty} from '../../utils/helper/ToastHelper';
 
 interface ToDoListScreenProps {
   isLoading: boolean;
@@ -42,14 +43,6 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
 
   const hideDialogInputText = () => {
     setDialogVisible(false);
-  };
-
-  const showToastInputEmpty = () => {
-    Toast.show({
-      type: TypeToast.error,
-      text1: Strings.error,
-      text2: Strings.please_fill_your_todo_name,
-    });
   };
 
   const handleClickOkAddMyToDo = (text: string) => {

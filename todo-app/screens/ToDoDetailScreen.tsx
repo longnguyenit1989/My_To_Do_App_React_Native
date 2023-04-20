@@ -9,6 +9,7 @@ import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 import {useAppDispatch} from '../store/Hook';
 import {myToDoActions} from '../reducers/MyToDoReducer';
+import { showToastInputEmpty } from '../utils/helper/ToastHelper';
 
 export interface RouteParams {
   myToDo?: MyToDo;
@@ -26,6 +27,11 @@ const ToDoDetailScreen: React.FC = () => {
   const [isDialogDeleteVisible, setDialogDeleteVisible] = useState(false);
 
   const showDialogUpdateInputText = () => {
+    if (inputText.length === 0) {
+      showToastInputEmpty();
+      return;
+    }
+
     setDialogUpdateVisible(true);
   };
 

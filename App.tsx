@@ -13,6 +13,7 @@ import ToDoDetailScreen from './todo-app/screens/ToDoDetailScreen';
 import ToDoListContainer from './todo-app/screens/to_do_list/ToDoListContainer';
 import {
   DrawerNameScreen,
+  LabelDrawerItem,
   NameScreen,
   Strings,
   TittleToolBarScreen,
@@ -92,14 +93,14 @@ const CustomDrawerContent = ({navigation}: DrawerContentComponentProps) => {
   return (
     <DrawerContentScrollView>
       <DrawerItem
-        label="Load data to firebase"
+        label={LabelDrawerItem.load_data_to_firebase}
         onPress={() => {
           // console.log("Load data to firebase")
           navigation.closeDrawer();
         }}
       />
       <DrawerItem
-        label="Get data from firebase"
+        label={LabelDrawerItem.get_data_from_firebase}
         onPress={() => {
           // console.log("Get data from firebase")
           navigation.closeDrawer();
