@@ -1,6 +1,13 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  plugins: [
-    '@babel/plugin-transform-runtime'
+  presets: [
+    'module:metro-react-native-babel-preset'
   ],
-}
+  plugins: [
+    '@babel/plugin-transform-runtime' ,
+      [
+          'react-native-reanimated/plugin', {
+              relativeSourceLocation: true,
+          },
+      ]
+  ],
+};

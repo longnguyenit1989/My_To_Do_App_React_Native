@@ -8,6 +8,10 @@ export const TittleToolBarScreen = Object.freeze({
   tittleToDoDetailScreen: 'Todo Detail',
 });
 
+export const DrawerNameScreen = Object.freeze({
+  nameDrawerToDoList: 'DrawerToDoList'
+})
+
 export const Strings = Object.freeze({
   ok: 'Ok',
   cancel: 'Cancel',
@@ -23,6 +27,7 @@ export const Strings = Object.freeze({
   you_delete_todo_success: 'You delete success: ',
   you_add_todo_success: 'You add todo success: ',
   you_add_todo_failed: 'You add todo failed: ',
+  text_navigation: '≡',
 });
 
 export const Dimens = Object.freeze({
