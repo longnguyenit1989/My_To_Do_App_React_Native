@@ -8,12 +8,16 @@ const databaseParams = {
   size: 200000,
 };
 
+const tableName = {
+  todo: 'todos',
+};
+
 const db = SQLite.openDatabase(databaseParams);
 
 export async function createTable() {
   (await db).transaction((tx: any) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)',
+      `CREATE TABLE IF NOT EXISTS ${tableName.todo} (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)`,
       [],
       () => {},
       (error: any) => console.log('Error creating table: ', error),
@@ -24,7 +28,7 @@ export async function createTable() {
 export async function insertDbToDoItemById(item: MyToDo) {
   (await db).transaction((tx: any) => {
     tx.executeSql(
-      'INSERT INTO todos (name, id) VALUES (?, ?)',
+      `INSERT INTO ${tableName.todo} (name, id) VALUES (?, ?)`,
       [item.name, item.id.toString()],
       (tx: any, results: any) => {},
       (error: any) => console.log('Error inserting item: ', error),
@@ -38,7 +42,7 @@ export async function getToDoItemFromDbById(
 ) {
   (await db).transaction((tx: any) => {
     tx.executeSql(
-      'SELECT * FROM todos WHERE id=?',
+      `SELECT * FROM ${tableName.todo} WHERE id=?`,
       [id],
       (tx: any, results: {rows: any}) => {
         const rows = results.rows;
@@ -59,7 +63,7 @@ export async function getToDoItemFromDbById(
 export async function updateDbToDoItemById(item: MyToDo) {
   (await db).transaction((tx: any) => {
     tx.executeSql(
-      'UPDATE todos SET name=? WHERE id=?',
+      `UPDATE ${tableName.todo} SET name=? WHERE id=?`,
       [item.name, item.id],
       (tx: any, results: any) => {},
       (error: any) => console.log('Error updating item: ', error),
@@ -70,7 +74,7 @@ export async function updateDbToDoItemById(item: MyToDo) {
 export async function deleteDbToDoItemById(needDeleteToDo: MyToDo) {
   (await db).transaction((tx: any) => {
     tx.executeSql(
-      'DELETE FROM todos WHERE id=?',
+      `DELETE FROM ${tableName.todo} WHERE id=?`,
       [needDeleteToDo.id],
       (tx: any, results: any) => {},
       (error: any) => console.log('Error deleting item: ', error),
@@ -82,7 +86,7 @@ export async function getAllToDoItemsFromDb(): Promise<MyToDo[]> {
   return new Promise(async (resolve, reject) => {
     (await db).transaction((tx: any) => {
       tx.executeSql(
-        'SELECT * FROM todos',
+        `SELECT * FROM ${tableName.todo}`,
         [],
         (tx: any, results: {rows: any}) => {
           const rows = results.rows;
@@ -100,4 +104,21 @@ export async function getAllToDoItemsFromDb(): Promise<MyToDo[]> {
       );
     });
   });
+}
+
+export async function deleteAllDbToDoItems() {
+  (await db).transaction((tx: any) => {
+    tx.executeSql(
+      `DELETE FROM ${tableName.todo}`,
+      [],
+      (tx: any, results: any) => {},
+      (error: any) => console.log('Error deleting all items: ', error),
+    );
+  });
+}
+
+export async function saveMyTodoListToDatabase(myTodoList: Array<MyToDo>) {
+  for (const myTodo of myTodoList) {
+    await insertDbToDoItemById(myTodo);
+  }
 }

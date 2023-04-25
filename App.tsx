@@ -12,18 +12,30 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import ToDoDetailScreen from './todo-app/screens/ToDoDetailScreen';
 import ToDoListContainer from './todo-app/screens/to_do_list/ToDoListContainer';
 import {
+  Dimens,
   DrawerNameScreen,
   LabelDrawerItem,
+  NameCollectionFireBase,
   NameScreen,
   Strings,
   TittleToolBarScreen,
 } from './todo-app/utils/Constans';
 import {Colors} from './todo-app/utils/color/Colors';
-import {createTable} from './todo-app/sqlite/Db';
+import {
+  createTable,
+  deleteAllDbToDoItems,
+  getAllToDoItemsFromDb,
+  saveMyTodoListToDatabase,
+} from './todo-app/sqlite/Db';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {appStore} from './todo-app/store/Store';
 import {persistStore} from 'redux-persist';
+import dbFirebase from './todo-app/firebase/firebase.config';
+import {doc, setDoc, getDoc} from 'firebase/firestore';
+import {MyToDo} from './todo-app/entity/MyToDo';
+import {myToDoActions} from './todo-app/reducers/MyToDoReducer';
+import {useAppDispatch} from './todo-app/store/Hook';
 
 const Stack = createStackNavigator();
 
@@ -41,10 +53,10 @@ const App: React.FunctionComponent = () => {
       <PersistGate loading={false} persistor={persistor}>
         <NavigationContainer>
           <Drawer.Navigator
-            initialRouteName={DrawerNameScreen.nameDrawerToDoList}
+            initialRouteName={DrawerNameScreen.nameDrawerNavigator}
             drawerContent={props => <CustomDrawerContent {...props} />}>
             <Drawer.Screen
-              name={DrawerNameScreen.nameDrawerToDoList}
+              name={DrawerNameScreen.nameDrawerScreen}
               component={StackNavigator}
               options={{headerShown: false}}
             />
@@ -90,30 +102,65 @@ const StackNavigator = ({navigation}: any) => (
 );
 
 const CustomDrawerContent = ({navigation}: DrawerContentComponentProps) => {
+  const _dispatch = useAppDispatch();
+
   return (
     <DrawerContentScrollView>
       <DrawerItem
         label={LabelDrawerItem.load_data_to_firebase}
         onPress={() => {
-          // console.log("Load data to firebase")
+          getListToDoSqliteAndSetToFireBase();
           navigation.closeDrawer();
         }}
       />
       <DrawerItem
         label={LabelDrawerItem.get_data_from_firebase}
         onPress={() => {
-          // console.log("Get data from firebase")
+          getListToDoFireBaseAndSetToSqlite();
           navigation.closeDrawer();
         }}
       />
     </DrawerContentScrollView>
   );
+
+  async function getListToDoSqliteAndSetToFireBase() {
+    const listMyToDo = await getAllToDoItemsFromDb();
+
+    const dataToSave = {
+      todos: listMyToDo.map(item => ({
+        id: item.id,
+        name: item.name,
+      })),
+    };
+
+    setDoc(
+      doc(dbFirebase, NameCollectionFireBase.TODO_LIST, 'test'),
+      dataToSave,
+    );
+  }
+
+  async function getListToDoFireBaseAndSetToSqlite() {
+    await deleteAllDbToDoItems();
+    const docRef = doc(dbFirebase, NameCollectionFireBase.TODO_LIST, 'test');
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const myTodoList = docSnap
+        .data()
+        .todos.map(
+          (todo: {name: string; id: number}) => new MyToDo(todo.name, todo.id),
+        );
+      await saveMyTodoListToDatabase(myTodoList);
+
+      _dispatch(myToDoActions.getListMyToDoFromSqliteIsLoading());
+    }
+  }
 };
 
 const styles = StyleSheet.create({
   drawerIcon: {
-    marginLeft: 15,
-    fontSize: 30,
+    marginLeft: Dimens.drawerMarginLeft,
+    fontSize: Dimens.drawerFontSize,
     color: Colors.white,
   },
 });

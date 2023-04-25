@@ -14,7 +14,8 @@ export const PlatformName = Object.freeze({
 });
 
 export const DrawerNameScreen = Object.freeze({
-  nameDrawerToDoList: 'DrawerToDoList',
+  nameDrawerNavigator: 'DrawerNavigator',
+  nameDrawerScreen: 'DrawerScreen',
 });
 
 export const LabelDrawerItem = Object.freeze({
@@ -47,6 +48,8 @@ export const Dimens = Object.freeze({
   widthButton: 120,
   sizeTextButton: 16,
   widthBlankView: 16,
+  drawerMarginLeft: 15,
+  drawerFontSize: 30,
 });
 
 export const TypeToast = Object.freeze({
@@ -62,4 +65,8 @@ export const ReduxContants = Object.freeze({
   SLICE_MY_TODO: 'slice_my_todo',
   REDUCER_ROOT_KEY: 'reducer_root_key',
   REDUCER_WHITE_LIST: 'reducer_white_list',
+});
+
+export const NameCollectionFireBase = Object.freeze({
+  TODO_LIST: 'todo_list',
 });
