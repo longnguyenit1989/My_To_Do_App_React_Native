@@ -1,26 +1,18 @@
 import React, {useEffect} from 'react';
-import {StatusBar, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import {createStackNavigator} from '@react-navigation/stack';
+
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
-import ToDoDetailScreen from './todo-app/screens/ToDoDetailScreen';
-import ToDoListContainer from './todo-app/screens/to_do_list/ToDoListContainer';
 import {
-  Dimens,
   DrawerNameScreen,
   LabelDrawerItem,
   NameCollectionFireBase,
-  NameScreen,
-  Strings,
-  TittleToolBarScreen,
 } from './todo-app/utils/Constans';
-import {Colors} from './todo-app/utils/color/Colors';
 import {
   createTable,
   deleteAllDbToDoItems,
@@ -38,8 +30,7 @@ import {myToDoActions} from './todo-app/reducers/MyToDoReducer';
 import {useAppDispatch} from './todo-app/store/Hook';
 
 import { MyToDo } from './todo-app/entity/MyToDo';
-
-const Stack = createStackNavigator();
+import { StackNavigator } from './todo-app/utils/StackNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -68,40 +59,6 @@ const App: React.FunctionComponent = () => {
     </Provider>
   );
 };
-
-const StackNavigator = ({navigation}: any) => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name={NameScreen.nameToDoListContainer}
-      component={ToDoListContainer}
-      options={{
-        title: TittleToolBarScreen.tittleToDoListScreen,
-        headerStyle: {
-          backgroundColor: Colors.primary,
-        },
-        headerTintColor: Colors.white,
-        headerTitleAlign: 'center',
-        headerLeft: () => (
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Text style={styles.drawerIcon}>≡</Text>
-          </TouchableOpacity>
-        ),
-      }}
-    />
-    <Stack.Screen
-      name={NameScreen.nameToDoDetailScreen}
-      component={ToDoDetailScreen}
-      options={{
-        title: TittleToolBarScreen.tittleToDoDetailScreen,
-        headerStyle: {
-          backgroundColor: Colors.primary,
-        },
-        headerTintColor: Colors.white,
-        headerTitleAlign: 'center',
-      }}
-    />
-  </Stack.Navigator>
-);
 
 const CustomDrawerContent = ({navigation}: DrawerContentComponentProps) => {
   const _dispatch = useAppDispatch();
@@ -158,13 +115,5 @@ const CustomDrawerContent = ({navigation}: DrawerContentComponentProps) => {
     }
   }
 };
-
-const styles = StyleSheet.create({
-  drawerIcon: {
-    marginLeft: Dimens.drawerMarginLeft,
-    fontSize: Dimens.drawerFontSize,
-    color: Colors.white,
-  },
-});
 
 export default App;

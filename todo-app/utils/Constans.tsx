@@ -39,6 +39,7 @@ export const Strings = Object.freeze({
   you_add_todo_success: 'You add todo success: ',
   you_add_todo_failed: 'You add todo failed: ',
   text_navigation: '≡',
+  title_dialog_input_todo: 'Input your todo',
 });
 
 export const Dimens = Object.freeze({

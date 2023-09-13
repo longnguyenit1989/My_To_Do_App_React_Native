@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.gray,
     borderRadius: 5,
     padding: 10,
+    color: Colors.black,
   },
   touchableOpacityButtonUpDate: {
     marginTop: 30,

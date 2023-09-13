@@ -94,7 +94,7 @@ const ToDoListScreen: React.FC<ToDoListScreenProps> = (
       <SafeAreaView style={styles.containerView}>
         <DialogInputText
           visible={isDialogVisible}
-          tittle="Input your todo"
+          tittle={Strings.title_dialog_input_todo}
           onPressOk={handleClickOkAddMyToDo}
           onPressCancel={handleClickCancel}
         />
