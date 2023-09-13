@@ -9,7 +9,7 @@ import {Dimens, Strings} from '../utils/Constans';
 import DialogConfirm from '../utils/dialog/DialogConfirm';
 import {useAppDispatch} from '../store/Hook';
 import {myToDoActions} from '../reducers/MyToDoReducer';
-import { showToastInputEmpty } from '../utils/helper/ToastHelper';
+import {showToastInputEmpty} from '../utils/helper/ToastHelper';
 
 export interface RouteParams {
   myToDo?: MyToDo;
@@ -87,6 +87,7 @@ const ToDoDetailScreen: React.FC = () => {
         value={inputText}
         onChangeText={value => setInputText(value)}
         placeholder={'your todo name...'}
+        placeholderTextColor={Colors.gray_place_holder}
         autoFocus={true}
       />
 

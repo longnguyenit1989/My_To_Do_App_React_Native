@@ -10,4 +10,8 @@ export const Colors = {
   blue: '#0277BD',
   gray: 'gray',
   red: '#cf2317',
+
+  gray_place_holder: 'rgba(0,0,0,0.5)',
+
+  gray_background_dialog: 'rgba(0,0,0,0.5)',
 };

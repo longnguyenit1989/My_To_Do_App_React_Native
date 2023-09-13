@@ -45,6 +45,7 @@ const DialogInputText: React.FC<DialogInputTextProps> = (
             onChangeText={value => setInputText(value)}
             placeholder={'your todo name...'}
             autoFocus={true}
+            placeholderTextColor={Colors.gray_place_holder}
           />
 
           <View style={styles.viewHorizontalButton}>
