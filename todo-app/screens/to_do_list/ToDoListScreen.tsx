@@ -16,12 +16,13 @@ import {
 import {MyToDo} from '../../entity/MyToDo';
 
 import {Colors} from '../../utils/color/Colors';
-import DialogInputText from '../../utils/dialog/DialogInputText';
+
 import {Dimens, NameScreen, Strings, TypeToast} from '../../utils/Constans';
 import {RouteParams} from '../ToDoDetailScreen';
 import {useAppDispatch} from '../../store/Hook';
 import {myToDoActions} from '../../reducers/MyToDoReducer';
 import {showToastInputEmpty} from '../../utils/helper/ToastHelper';
+import DialogInputText from '../../utils/dialog/DialogInputText';
 
 interface ToDoListScreenProps {
   isLoading: boolean;

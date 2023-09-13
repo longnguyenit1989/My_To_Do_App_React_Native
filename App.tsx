@@ -33,9 +33,11 @@ import {appStore} from './todo-app/store/Store';
 import {persistStore} from 'redux-persist';
 import dbFirebase from './todo-app/firebase/firebase.config';
 import {doc, setDoc, getDoc} from 'firebase/firestore';
-import {MyToDo} from './todo-app/entity/MyToDo';
+
 import {myToDoActions} from './todo-app/reducers/MyToDoReducer';
 import {useAppDispatch} from './todo-app/store/Hook';
+
+import { MyToDo } from './todo-app/entity/MyToDo';
 
 const Stack = createStackNavigator();
 
